@@ -1,14 +1,13 @@
-// services/InventoryManager.ts
 export class InventoryManager {
     private static instance: InventoryManager;
-    private stock: Record<string, number>;
+    private ingredients: Map<string, number>;
 
     private constructor() {
-        this.stock = {
-            milk: 10,
-            sugar: 10,
-            coffee_beans: 20,
-        };
+        this.ingredients = new Map([
+            ['coffee_beans', 1000],
+            ['milk', 500],
+            ['sugar', 300]
+        ]);
     }
 
     public static getInstance(): InventoryManager {
@@ -18,15 +17,16 @@ export class InventoryManager {
         return InventoryManager.instance;
     }
 
-    public checkStock(ingredient: string): number {
-        return this.stock[ingredient] || 0;
-    }
-
-    public useIngredient(ingredient: string, amount: number): boolean {
-        if (this.stock[ingredient] >= amount) {
-            this.stock[ingredient] -= amount;
+    public useIngredient(name: string, quantity: number): boolean {
+        const current = this.ingredients.get(name) || 0;
+        if (current >= quantity) {
+            this.ingredients.set(name, current - quantity);
             return true;
         }
         return false;
+    }
+
+    public checkStock(name: string): number {
+        return this.ingredients.get(name) || 0;
     }
 }

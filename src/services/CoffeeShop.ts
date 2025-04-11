@@ -45,7 +45,5 @@ export class CoffeeShop {
     async getOrderHistory(): Promise<any[]> {
         return await this.db.getAllOrders();
     }
-    public checkStock(ingredient: string): number {
-        return InventoryManager.getInstance().checkStock(ingredient);
-    }
+    
 }
